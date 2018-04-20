@@ -26,7 +26,9 @@ use sys::{
     jfloat,
     jint,
     jlong,
+    jclass,
     jshort,
+    JNINativeMethod,
     jsize,
     jvalue,
     jbooleanArray,
@@ -104,6 +106,19 @@ impl<'a> JNIEnv<'a> {
     /// Get the java version that we're being executed from.
     pub fn get_version(&self) -> Result<JNIVersion> {
         Ok(unsafe { jni_unchecked!(self.internal, GetVersion) }.into())
+    }
+
+    /// Register native methods dynamic
+    pub fn register_natives(&self, clazz: JClass, methods: &[JNINativeMethod]) -> Result<jint> {
+        Ok(unsafe {
+            jni_unchecked!(
+            self.internal,
+            RegisterNatives,
+            clazz.into_inner() as jclass,
+            methods.as_ptr() as *const JNINativeMethod,
+            methods.len() as jint
+            )
+        }.into())
     }
 
     /// Define a new java class. See the JNI docs for more details - I've never
