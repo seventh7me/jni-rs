@@ -152,7 +152,7 @@
 //! expected output `Hello, josh!` from your java class.
 
 /// Bindgen-generated definitions. Mirrors `jni.h` and `jni_md.h`.
-extern crate jni_sys;
+pub extern crate jni_sys;
 /// `jni-sys` re-exports
 pub mod sys;
 
